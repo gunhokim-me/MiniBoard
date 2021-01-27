@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+	<display-name>exam</display-name>
+	<welcome-file-list>
+	  <welcome-file>index.html</welcome-file>
+	  <welcome-file>index.htm</welcome-file>
+	  <welcome-file>index.jsp</welcome-file>
+	  <welcome-file>default.html</welcome-file>
+	  <welcome-file>default.htm</welcome-file>
+	  <welcome-file>default.jsp</welcome-file>
+	</welcome-file-list>
+  
+	<!-- ContextPath를 cp로 사용하기 위해 Application scope에 속성 추가 리스너 -->
+	<listener>
+		<listener-class>exam.listener.ApplicationListener</listener-class>	
+	</listener>
+
+	<!-- 문자열 인코딩 필터 -->
+	<filter>
+  		<filter-name>CharacterEncodingFilter</filter-name>
+  		<filter-class>exam.filter.CharacterEncodingFilter</filter-class>
+	</filter>
+	<filter-mapping>
+ 		<filter-name>CharacterEncodingFilter</filter-name>
+ 		<url-pattern>/*</url-pattern>
+ 	</filter-mapping>
+</web-app>
