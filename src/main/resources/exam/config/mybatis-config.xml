@@ -9,6 +9,8 @@
 	<typeAlias type="exam.board.vo.BoardVo" alias="boardvo"/>
 	<typeAlias type="exam.board.vo.BoardPostVo" alias="boardpostvo"/>
 	<typeAlias type="exam.board.vo.AttachVo" alias="attachvo"/>
+	<typeAlias type="exam.board.vo.PageVo" alias="pagevo"/>
+	<typeAlias type="exam.board.vo.PostComVo" alias="postcomvo"/>
 </typeAliases>
 
   <environments default="development">
@@ -17,8 +19,14 @@
       <dataSource type="POOLED">
         <property name="driver" value="oracle.jdbc.OracleDriver"/>
         <property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
-        <property name="username" value="Ho"/>
+        <property name="username" value="hr"/>
         <property name="password" value="java"/>
+        <property name="poolMaximumActiveConnections" value="20"/>
+        <property name="poolMaximumIdleConnections" value="20"/>
+        <property name="poolMaximumCheckoutTime" value="20000"/>
+        <property name="poolPingEnabled" value="true"/>
+        <property name="poolPingConnectionsNotUsedFor" value="10000"/>
+        <property name="poolTimeToWait" value="15000"/>
       </dataSource>
     </environment>
   </environments>

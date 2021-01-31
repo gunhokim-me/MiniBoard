@@ -2,10 +2,10 @@ package exam.board.controller;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,38 +17,48 @@ import exam.board.service.BoardService;
 import exam.board.service.BoardServiceI;
 import exam.board.vo.AttachVo;
 import exam.board.vo.BoardPostVo;
+import exam.board.vo.BoardVo;
 import exam.util.FileUtil;
 
-@MultipartConfig
-@WebServlet("/saveboard")
-public class SaveBoard extends HttpServlet{
+@WebServlet("/anspost")
+public class Anspost extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	
 	BoardServiceI service = new BoardService();
 	
 	@Override
-	protected synchronized void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
 		
 		HttpSession session = req.getSession();
+		String userid2 = req.getParameter("userid2");
+		String bornum2 = req.getParameter("bornum2");
+		String postno2 = req.getParameter("postno2");
 		
-		String title = req.getParameter("title");
-		String cont = req.getParameter("editordata");
-		String bor_num = req.getParameter("bor_num");
+		String title = req.getParameter("title2");
+		String cont = req.getParameter("editordata2");
+		String bor_num = req.getParameter("bornum2");
 		int post_del = 1;
-		int post_c_no = 0;
-		String b_user_id = "";
 		String user_id = (String)session.getAttribute("S_USER");
 		
-		BoardPostVo vo = new BoardPostVo();
 		
+		BoardPostVo vo = new BoardPostVo();
+		BoardPostVo detailvo = new BoardPostVo();
+		detailvo.setBor_num(Integer.parseInt(bor_num));
+		detailvo.setPost_no(Integer.parseInt(postno2));
+		
+		BoardPostVo detail = service.selectBoardDetail(detailvo);
+		
+		int lft = (detail.getLft()+1);
+		
+		vo.setBor_num(Integer.parseInt(bor_num));
+		vo.setUser_id((String)session.getAttribute("S_USER"));
 		vo.setTitle(title);
 		vo.setCont(cont);
-		vo.setUser_id(user_id);
 		vo.setPost_del(post_del);
-		vo.setBor_num(Integer.parseInt(bor_num));
-		vo.setPost_no2(post_c_no);
-		vo.setUser_id2(b_user_id);
+		vo.setLft(lft);
+		vo.setPost_no2(Integer.parseInt(postno2));
+		vo.setUser_id2(userid2);
 		vo.setBor_num2(Integer.parseInt(bor_num));
 		int cnt = service.createPost(vo);
 		
@@ -84,4 +94,21 @@ public class SaveBoard extends HttpServlet{
 		}
 	}
 
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String userid = req.getParameter("userid");
+		String bornum = req.getParameter("bornum");
+		String postno = req.getParameter("postno");
+		
+		List<BoardVo> vo = service.selectBoardInfo(Integer.parseInt(bornum));
+		
+		
+		req.setAttribute("boardinfo", vo);
+		req.setAttribute("userid", userid);
+		req.setAttribute("bornum", bornum);
+		req.setAttribute("postno", postno);
+		
+		req.getRequestDispatcher("/board/anspost.jsp").forward(req, resp);
+	}
 }

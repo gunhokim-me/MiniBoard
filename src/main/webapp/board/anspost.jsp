@@ -47,13 +47,13 @@ footer {
 
 <script>
   	$(function(){
-  		$("#save").on("click", function(){
-  			let text =$("#summernote").summernote('editor.insertText', "${board_data.BOARD_CONTENT}");
-  			$("#text").val(text);
+  		$("#save2").on("click", function(){
+  			let text =$("#summernote2").summernote('editor.insertText', "${board_data.BOARD_CONTENT}");
+  			$("#text2").val(text);
   			let bor_num = $("#num").val();
-  			$("#bor_num").val(bor_num);
-  			$("#sumform").attr("action" , "${cp}/saveboard");
-  			$("#sumform").submit();
+  			$("#bor_num2").val(bor_num);
+  			$("#sumform2").attr("action" , "${cp}/anspost2");
+  			$("#sumform2").submit();
   		});
   		 
   		$("#attachbnt").on("click", function(){
@@ -72,7 +72,7 @@ footer {
 	<div class="container-fluid text-center">
 		<div class="row content">
 			<div class="col-sm-2 sidenav">
-				<c:forEach items="${useboard }" var="board">
+				<c:forEach items="${boardinfo }" var="board">
 					<p>
 						<a href="${cp }/boardcontent?bornum=${board.bor_num }">${board.bor_nm }</a>
 					</p>
@@ -80,29 +80,32 @@ footer {
 			</div>
 			<div class="col-sm-8 text-left">
 				<c:forEach items="${boardinfo }" var="select">
-					<h2>${select.bor_nm}</h2>
-					<input type="hidden" id="num" name="num" value="${select.bor_num }" />
+					<h2>${select.bor_nm} 답글 작성</h2>
+					<input type="hidden" id="num2" name="num" value="${select.bor_num }" />
 				</c:forEach>
-				<form method="post" enctype="multipart/form-data" id="sumform">
+				<form id="sumform2" method="post" enctype="multipart/form-data">
 					<div style="margin: 10px;">
-						제목 : <input type="text" name="title" id="title" /><br> 
+						제목 : <input type="text" name="title2" id="title2" /><br> 
 						작성자 :	<label>${S_USER }</label>
 
 					</div>
-					<textarea id="summernote" name="editordata"></textarea>
+					<textarea id="summernote2" name="editordata2"></textarea>
 					<div id="atdiv" style="width: 400px;">
 						<button type="button" style="float: right;" id="attachbnt">첨부파일 추가</button>
 						<input type="file" name="files" >
 					</div>
 					<div style="width: 370px;">
-						<button style="float: right;" type="button" class="btn btn-info" name="save" id="save">저장</button>
+						<button style="float: right;" type="button" class="btn btn-info" name="save" id="save2">저장</button>
 					</div>
-					<input type="hidden" id="text" name="cont" />
-					<input type="hidden" id="bor_num" name="bor_num" />
+					<input type="hidden" id="text2" name="cont" />
+					<input type="hidden" name="userid2" value="${userid }" />
+					<input type="hidden" name="bornum2" value="${bornum }"  />
+					<input type="hidden" name="postno2" value="${postno }"  />
+					<input type="hidden" id="comm2" name="commcont"/>	
 				</form>
 				<script>
 							$(document).ready(function() {
-								$("#summernote").summernote({
+								$("#summernote2").summernote({
 									height: 200,
 									placeholder: '최대 2048자까지 쓸 수 있습니다'
 								});

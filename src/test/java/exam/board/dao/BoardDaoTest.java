@@ -62,15 +62,15 @@ public class BoardDaoTest {
 	}
 	
 	//선택된 게시판 게시글 가져오기
-	@Test
-	public void boardContentTest() {
-		/***Given***/
-		int num = 1;
-		/***When***/
-		List<BoardPostVo> list = dao.boardContent(num);
-		/***Then***/
-		assertEquals(1, list.size());
-	}
+//	@Test
+//	public void boardContentTest() {
+//		/***Given***/
+//		int num = 1;
+//		/***When***/
+//		List<BoardPostVo> list = dao.boardContent(num);
+//		/***Then***/
+//		assertEquals(1, list.size());
+//	}
 	
 	
 	//게시글 등록
@@ -95,8 +95,6 @@ public class BoardDaoTest {
 		vo.setCont(cont);
 		vo.setPost_del(post_del);
 		vo.setLft(lft);
-		vo.setPost_c_no(post_c_no);
-		vo.setB_user_id(b_user_id);
 		vo.setBor_num(bor_num);
 		
 		/***When***/

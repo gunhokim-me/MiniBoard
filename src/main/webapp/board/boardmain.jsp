@@ -15,7 +15,7 @@
       margin-bottom: 0;
       border-radius: 0;
     }
-    .row.content {height: 450px}
+    .row.content {height: 500px}
     .sidenav {
       padding-top: 20px;
       background-color: #f1f1f1;
@@ -88,26 +88,34 @@
 					</thead>
 					<tbody>
 						<c:forEach items="${selectBoardList }" var="list">
-							<c:choose>
-								<c:when test="${list.post_del == 0 }">
-									<tr>
-										<td>${list.post_no}</td>
-										<td>[삭제된 게시글 입니다.]</td>
-										<td>${list.user_id}</td>
-										<td><fmt:formatDate value="${list.reg_dt}"
-												pattern="yyyy-MM-dd" /></td>
-									</tr>
-								</c:when>
-								<c:otherwise>
-									<tr>
-										<td class="detailboard" data-postno="${list.post_no}">${list.post_no}</td>
-										<td>${list.title}</td>
-										<td>${list.user_id}</td>
-										<td><fmt:formatDate value="${list.reg_dt}"
-												pattern="yyyy-MM-dd" /></td>
-									</tr>
-								</c:otherwise>
-							</c:choose>
+								<c:choose>
+									<c:when test="${list.post_del == 0 }">
+										<tr>
+											<td>${list.rn}</td>
+												<c:if test="${list.lft > 0}">
+													<td><c:forEach begin="0" end="${list.lft }">&nbsp;&nbsp;&nbsp;&nbsp;</c:forEach>→ [삭제된 게시글 입니다.]</td>
+												</c:if>
+												<c:if test="${list.lft == 0}">
+													<td>[삭제된 게시글 입니다.]</td>
+												</c:if>
+											<td>${list.user_id}</td>
+											<td><fmt:formatDate value="${list.reg_dt}" pattern="yyyy-MM-dd" /></td>
+										</tr>
+									</c:when>
+									<c:otherwise>
+										<tr>
+											<td>${list.rn}</td>
+												<c:if test="${list.lft > 0}">
+													<td class="detailboard" data-postno="${list.post_no }"><c:forEach begin="0" end="${list.lft }">&nbsp;&nbsp;&nbsp;&nbsp;</c:forEach>→ ${list.title}</td>
+												</c:if>
+												<c:if test="${list.lft == 0}">
+													<td class="detailboard" data-postno="${list.post_no }">${list.title}</td>
+												</c:if>
+											<td>${list.user_id}</td>
+											<td><fmt:formatDate value="${list.reg_dt}" pattern="yyyy-MM-dd" /></td>
+										</tr>
+									</c:otherwise>
+								</c:choose>
 						</c:forEach>
 					</tbody>
 				</table>
@@ -117,11 +125,32 @@
 			</div>
 		</div>
 		<ul class="pagination">
-			<li class="page-item"><a class="page-link" href="#">Previous</a></li>
-			<li class="page-item"><a class="page-link" href="#">1</a></li>
-			<li class="page-item active"><a class="page-link" href="#">2</a></li>
-			<li class="page-item"><a class="page-link" href="#">3</a></li>
-			<li class="page-item"><a class="page-link" href="#">Next</a></li>
+			<c:choose>
+				<c:when test="${pageVo.getPage()-1 <= 1 }">
+					<li class="page-item"><a class="page-link" href="${cp }/boardcontent?page=1&pageSize=10&bornum=${bornum}">Previous</a></li>
+				</c:when>
+				<c:otherwise>
+					<li class="page-item"><a class="page-link" href="${cp }/boardcontent?page=${pageVo.getPage() -1}&pageSize=10&bornum=${bornum}">Previous</a></li>
+				</c:otherwise>
+			</c:choose>
+			<c:forEach begin="1" end="${pagination }" var="i">
+				<c:choose>
+					<c:when test="${pageVo.getPage() == i }">
+						<li class="page-item active"><a class="page-link" href="#">${i }</a></li>
+					</c:when>
+					<c:otherwise>
+						<li class="page-item"><a class="page-link" href="${cp }/boardcontent?page=${i}&pageSize=10&bornum=${bornum}">${i }</a></li>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+			<c:choose>
+				<c:when test="${pageVo.getPage()+1 >= pagination }">
+					<li class="page-item"><a class="page-link" href="${cp }/boardcontent?page=${pagination}&pageSize=10&bornum=${bornum}">Next</a></li>
+				</c:when>
+				<c:otherwise>
+					<li class="page-item"><a class="page-link" href="${cp }/boardcontent?page=${pageVo.getPage() +1}&pageSize=10&bornum=${bornum}">Previous</a></li>
+				</c:otherwise>
+			</c:choose>
 		</ul>
 	</div>
 
